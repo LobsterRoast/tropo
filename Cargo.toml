@@ -3,6 +3,6 @@ name = "tropo"
 version = "0.1.0"
 edition = "2021"
 description = "A simple library to parse TcpStream data (NOT IN A USABLE STATE)"
-license = "GPT-3.0"
+license = "MIT"
 
 [dependencies]
