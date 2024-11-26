@@ -13,7 +13,7 @@ pub struct HttpRequest {
     pub user_agent: String,
 }
 
-pub struct HttpsRequest {
+pub struct HttpsRequest<S> {
     pub uri: String,
     pub host: String,
     pub user_agent: String,
@@ -49,7 +49,7 @@ impl HttpRequest {
 }
 
 impl HttpsRequest {
-    pub fn new(mut stream: &SslStream) -> Self {
+    pub fn new(mut stream: &SslStream<S>) -> Self {
         let mut byte_data = [0; 1024];
         let byte_count = stream.read(&mut byte_data).unwrap();
         let mut parsed_http_data = str::from_utf8(&byte_data[..byte_count]).unwrap().lines();
