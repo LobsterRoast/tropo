@@ -24,7 +24,7 @@ impl HttpRequest {
             .next()
             .take()
             .unwrap()
-            .to_owned(),
+            .to_string(),
             parsed_http_data: parsed_http_data.to_string()
         }
     }
@@ -56,7 +56,7 @@ impl HttpsRequest
                 .next()
                 .take()
                 .unwrap()
-                .to_owned(),
+                .to_string(),
             parsed_http_data: parsed_http_data.to_string()
         }
     }
