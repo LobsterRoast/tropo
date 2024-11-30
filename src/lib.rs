@@ -9,17 +9,9 @@ pub trait HandleRequest {
 }
 pub struct HttpRequest {
     pub uri: String,
-    pub host: String,
-    pub user_agent: String,
     pub parsed_http_data: String
 }
 
-pub struct HttpsRequest {
-    pub uri: String,
-    pub host: String,
-    pub user_agent: String,
-    pub parsed_http_data: String
-}
 
 impl HttpRequest {
     pub fn new(mut stream: &TcpStream) -> Self {
@@ -29,29 +21,29 @@ impl HttpRequest {
         let mut parsed_http_data_iter = parsed_http_data.lines();
         Self {
             uri: parsed_http_data_iter
-                .next()
-                .take()
-                .unwrap()
-                .to_owned(),
-            host: parsed_http_data_iter
-                .next()
-                .take()
-                .unwrap()
-                .strip_prefix("Host: ")
-                .unwrap()
-                .to_owned(),
-            user_agent: parsed_http_data_iter
-                .next()
-                .take()
-                .unwrap()
-                .strip_prefix("User-Agent: ")
-                .unwrap()
-                .to_owned(),
+            .next()
+            .take()
+            .unwrap()
+            .to_owned(),
             parsed_http_data: parsed_http_data.to_string()
         }
     }
+    pub fn get_header(&self, header: &str) -> Option<&str> {
+        let http_data_lines = self.parsed_http_data.lines();
+        for line in http_data_lines {
+            if line.starts_with(&header) {
+                let stripped_line = line.strip_prefix(&format!("{}: ", header));
+                return Some(stripped_line.unwrap());
+            }
+        }
+        None
+    }
 }
 
+pub struct HttpsRequest {
+    pub uri: String,
+    pub parsed_http_data: String
+}
 impl HttpsRequest 
 {
     pub fn new(stream: &mut SslStream<TcpStream>) -> Self {
@@ -65,22 +57,18 @@ impl HttpsRequest
                 .take()
                 .unwrap()
                 .to_owned(),
-            host: parsed_http_data_iter
-                .next()
-                .take()
-                .unwrap()
-                .strip_prefix("Host: ")
-                .unwrap()
-                .to_owned(),
-            user_agent: parsed_http_data_iter
-                .next()
-                .take()
-                .unwrap()
-                .strip_prefix("User-Agent: ")
-                .unwrap()
-                .to_owned(),
             parsed_http_data: parsed_http_data.to_string()
         }
+    }
+    pub fn get_header(&self, header: &str) -> Option<&str> {
+        let http_data_lines = self.parsed_http_data.lines();
+        for line in http_data_lines {
+            if line.starts_with(&header) {
+                let stripped_line = line.strip_prefix(&format!("{}: ", header));
+                return Some(stripped_line.unwrap());
+            }
+        }
+        None
     }
 }
 
