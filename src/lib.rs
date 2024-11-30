@@ -3,10 +3,6 @@ use std::str;
 use std::io::Read;
 use openssl::ssl::SslStream;
 
-
-pub trait HandleRequest {
-    fn handle_request() -> Result<(), Box<dyn std::error::Error>>;
-}
 pub struct HttpRequest {
     pub uri: String,
     pub parsed_http_data: String
