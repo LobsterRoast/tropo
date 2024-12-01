@@ -21,7 +21,7 @@ bitflags! {
     }
 }
 
-pub static HttpMethods: Lazy<HashMap<&str, HttpMethod>> = Lazy::new(|| {
+pub static HTTP_METHODS: Lazy<HashMap<&str, HttpMethod>> = Lazy::new(|| {
     HashMap::from([
         ("GET", HttpMethod::GET),
         ("HEAD", HttpMethod::HEAD),
@@ -50,7 +50,7 @@ impl HttpRequest {
             .lines()
             .next()
             .unwrap();
-        let method = HttpMethods.get(uri
+        let method = HTTP_METHODS.get(uri
             .split_once(' ')
             .unwrap().0
         );
@@ -87,7 +87,7 @@ impl HttpsRequest
             .lines()
             .next()
             .unwrap();
-        let method = HttpMethods.get(uri
+        let method = HTTP_METHODS.get(uri
             .split_once(' ')
             .unwrap().0
         );
