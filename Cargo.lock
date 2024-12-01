@@ -133,6 +133,8 @@ dependencies = [
 name = "tropo"
 version = "0.2.0"
 dependencies = [
+ "bitflags",
+ "once_cell",
  "openssl",
 ]
 
